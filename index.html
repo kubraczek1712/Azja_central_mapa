@@ -47,8 +47,11 @@ button {
 <div id="map"></div>
 
 <div class="panel">
-  <label>📅 Data podróży</label>
-  <input type="date" id="date">
+  <label>📅 Data podróży – od</label>
+  <input type="date" id="dateFrom">
+
+  <label>📅 Data podróży – do</label>
+  <input type="date" id="dateTo">
 
   <label>✈️ Wybrane lotnisko</label>
   <input type="text" id="airport" readonly placeholder="Kliknij lotnisko na mapie">
@@ -82,18 +85,24 @@ airports.forEach(a => {
 });
 
 function sendPlan() {
-  const date = document.getElementById('date').value;
+  const from = document.getElementById('dateFrom').value;
+  const to = document.getElementById('dateTo').value;
   const airport = document.getElementById('airport').value;
 
-  if (!date || !airport) {
-    alert("Proszę wybrać datę oraz lotnisko.");
+  if (!from || !to || !airport) {
+    alert("Proszę wybrać datę OD, datę DO oraz lotnisko.");
     return;
   }
 
-  const email = "kubraczek1712@gmail.com"; // ← ZMIEŃ NA SWÓJ
+  if (from > to) {
+    alert("Data 'od' nie może być późniejsza niż data 'do'.");
+    return;
+  }
+
+  const email = "KUBRACZEK1712@GMAIL.COM"; // ← ZMIEŃ
   const subject = encodeURIComponent("Plan podróży – Azja Centralna");
   const body = encodeURIComponent(
-    `Plan podróży:\n\nData: ${date}\nLotnisko: ${airport}`
+    `Plan podróży:\n\nOkres: ${from} – ${to}\nLotnisko: ${airport}`
   );
 
   window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
